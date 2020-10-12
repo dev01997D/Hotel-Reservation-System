@@ -10,6 +10,13 @@ public class Hotel {
 	private int weekendRateForRegular;
 	private long totalPrice;
 
+	// Constructors
+	public Hotel(String hotelName, int weekRateForRegular, int weekendRateForRegular) {
+		this.hotelName = hotelName;
+		this.weekRateForRegular = weekRateForRegular;
+		this.weekendRateForRegular = weekendRateForRegular;
+	}
+
 	// Getters and Setters
 	public String getHotelName() {
 		return hotelName;
@@ -19,19 +26,19 @@ public class Hotel {
 		this.hotelName = hotelName;
 	}
 
-	public int getWeekRate() {
+	public int getWeekRateForRegular() {
 		return weekRateForRegular;
 	}
 
-	public void setWeekRate(int weekRateForRegular) {
+	public void setWeekRateForRegular(int weekRateForRegular) {
 		this.weekRateForRegular = weekRateForRegular;
 	}
 
-	public int getWeekendRate() {
+	public int getWeekendRateForRegular() {
 		return weekendRateForRegular;
 	}
 
-	public void setWeekendRate(int weekendRateForRegular) {
+	public void setWeekendRateForRegular(int weekendRateForRegular) {
 		this.weekendRateForRegular = weekendRateForRegular;
 	}
 
@@ -41,13 +48,6 @@ public class Hotel {
 
 	public void setTotalPrice(long totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	// Constructors
-	public Hotel(String hotelName, int weekRateForRegular, int weekendRateForRegular) {
-		this.hotelName = hotelName;
-		this.weekRateForRegular = weekRateForRegular;
-		this.weekendRateForRegular = weekendRateForRegular;
 	}
 
 	@Override
