@@ -57,14 +57,14 @@ public class HotelReservationMain {
 			long totalPrice = hotel.getWeekRateForRegular() * weekDays + hotel.getWeekendRateForRegular() * weekends;
 			hotel.setTotalPrice(totalPrice);
 		}
-		List<Hotel> cheapestHotelList = hotelLog.getHotelBook().stream()
-				.sorted(Comparator.comparing(Hotel::getTotalPrice)).collect(Collectors.toList());
-
-		Hotel cheapHotel = cheapestHotelList.get(0); // Initialize to lowest price hotel
-		long lowestPrice = cheapestHotelList.get(0).getTotalPrice();
-		int rating = cheapestHotelList.get(0).getRating();
+		
+		List<Hotel> bestRatedHotelList =hotelLog.getHotelBook().stream().sorted(Comparator.comparing(Hotel::getRating).reversed()).collect(Collectors.toList());
+		Hotel cheapHotel = bestRatedHotelList.get(0);   // Initialize to highest rated hotel
+		long lowestPrice = bestRatedHotelList.get(0).getTotalPrice();
+		int rating = bestRatedHotelList.get(0).getRating();
+		
 		for (Hotel hotel : hotelLog.getHotelBook()) {
-			if (hotel.getTotalPrice() <= lowestPrice && hotel.getRating() > rating)
+			if (hotel.getTotalPrice() < lowestPrice && hotel.getRating() >= rating)
 				cheapHotel = hotel;
 		}
 		return cheapHotel;
@@ -75,7 +75,7 @@ public class HotelReservationMain {
 		System.out.println("Welcome to Hotel Reservation!");
 		addHotelWithRegularCustomerPrice();
 
-		// UC2 & UC4 & UC6
+		// UC2 & UC4 & UC6 & UC7
 		System.out.println("Enter the check in date in ddMMMYYYY format");
 		String startDate = SC.next();
 		System.out.println("Enter the check out date in ddMMMYYYY format");
