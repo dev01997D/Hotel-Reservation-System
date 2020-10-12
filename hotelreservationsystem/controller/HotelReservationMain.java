@@ -18,6 +18,10 @@ public class HotelReservationMain {
 	static LocalDateTime now = LocalDateTime.now();
 	static SimpleDateFormat formatter = new SimpleDateFormat("ddMMMyyyy");
 
+	private static enum customer_Type {
+		REGULAR, REWARD;
+	}
+
 	// Adding hotel details for regular customer
 	private static void addHotelWithRegularCustomerPrice() {
 		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 80, 80, 3);
@@ -47,7 +51,7 @@ public class HotelReservationMain {
 		Calendar endCal = Calendar.getInstance();
 		endCal.setTime(endDate);
 
-		int weekDays = 0;
+		long weekDays = 0;
 		do {
 			if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
 					&& startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
@@ -57,15 +61,18 @@ public class HotelReservationMain {
 		} while (startCal.getTimeInMillis() <= endCal.getTimeInMillis());
 
 		long weekends = dateRange - weekDays;
-		for (Hotel hotel : hotelLog.getHotelBook()) {
-			long totalPrice = hotel.getWeekRateForRewardCustomer() * weekDays + hotel.getWeekendRateForRewardCustomer() * weekends;
-			hotel.setTotalPrice(totalPrice);
+		if (customer_Type.REWARD.name().equals("REWARD")) {
+			for (Hotel hotel : hotelLog.getHotelBook()) {
+				long totalPrice = hotel.getWeekRateForRewardCustomer() * weekDays
+						+ hotel.getWeekendRateForRewardCustomer() * weekends;
+				hotel.setTotalPrice(totalPrice);
+			}
 		}
 
 		List<Hotel> cheapRatedHotelList = hotelLog.getHotelBook().stream()
 				.sorted(Comparator.comparing(Hotel::getTotalPrice)).collect(Collectors.toList());
-		
-		Hotel cheapestHotel = cheapRatedHotelList.get(0); 
+
+		Hotel cheapestHotel = cheapRatedHotelList.get(0);
 		long lowestPrice = cheapRatedHotelList.get(0).getTotalPrice();
 		int rating = cheapRatedHotelList.get(0).getRating();
 
