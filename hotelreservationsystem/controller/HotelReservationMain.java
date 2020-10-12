@@ -20,15 +20,19 @@ public class HotelReservationMain {
 
 	// Adding hotel details for regular customer
 	private static void addHotelWithRegularCustomerPrice() {
-		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3);
-		Hotel bridgeWood = new Hotel("BridgeWood", 160, 40, 4);
-		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 5);
+		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 80, 80, 3);
+		Hotel bridgeWood = new Hotel("BridgeWood", 160, 40, 110, 50, 4);
+		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 100, 40, 5);
 		hotelLog.addHotelToHotelLogBook(lakeWood);
 		hotelLog.addHotelToHotelLogBook(bridgeWood);
 		hotelLog.addHotelToHotelLogBook(ridgeWood);
 
 		hotelLog.getHotelBook().stream().forEach((hotel) -> System.out.println(hotel));
 		;
+	}
+
+	// Adding hotel details for reward customer
+	private static void addHotelWithRewardCustomerPrice() {
 	}
 
 	// Find Cheapest hotel for given date range
@@ -57,12 +61,13 @@ public class HotelReservationMain {
 			long totalPrice = hotel.getWeekRateForRegular() * weekDays + hotel.getWeekendRateForRegular() * weekends;
 			hotel.setTotalPrice(totalPrice);
 		}
-		
-		List<Hotel> bestRatedHotelList =hotelLog.getHotelBook().stream().sorted(Comparator.comparing(Hotel::getRating).reversed()).collect(Collectors.toList());
-		Hotel cheapHotel = bestRatedHotelList.get(0);   // Initialize to highest rated hotel
+
+		List<Hotel> bestRatedHotelList = hotelLog.getHotelBook().stream()
+				.sorted(Comparator.comparing(Hotel::getRating).reversed()).collect(Collectors.toList());
+		Hotel cheapHotel = bestRatedHotelList.get(0); // Initialize to highest rated hotel
 		long lowestPrice = bestRatedHotelList.get(0).getTotalPrice();
 		int rating = bestRatedHotelList.get(0).getRating();
-		
+
 		for (Hotel hotel : hotelLog.getHotelBook()) {
 			if (hotel.getTotalPrice() < lowestPrice && hotel.getRating() >= rating)
 				cheapHotel = hotel;
@@ -71,9 +76,10 @@ public class HotelReservationMain {
 	}
 
 	public static void main(String[] args) {
-		// UC 1 & UC3 & UC5
+		// UC 1 & UC3 & UC5 & UC9
 		System.out.println("Welcome to Hotel Reservation!");
 		addHotelWithRegularCustomerPrice();
+		addHotelWithRewardCustomerPrice();
 
 		// UC2 & UC4 & UC6 & UC7
 		System.out.println("Enter the check in date in ddMMMYYYY format");
@@ -88,5 +94,6 @@ public class HotelReservationMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 }
