@@ -18,9 +18,9 @@ public class HotelReservationMain {
 
 	// Adding hotel details for regular customer
 	private static void addHotelWithRegularCustomerPrice() {
-		Hotel lakeWood = new Hotel("LakeWood", 110, 90);
-		Hotel bridgeWood = new Hotel("BridgeWood", 160, 50);
-		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150);
+		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3);
+		Hotel bridgeWood = new Hotel("BridgeWood", 160, 50, 4);
+		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 5);
 		hotelLog.addHotelToHotelLogBook(lakeWood);
 		hotelLog.addHotelToHotelLogBook(bridgeWood);
 		hotelLog.addHotelToHotelLogBook(ridgeWood);
