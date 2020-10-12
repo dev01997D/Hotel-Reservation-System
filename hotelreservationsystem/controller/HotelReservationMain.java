@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.blz.hotelreservationsystem.model.Hotel;
 import com.blz.hotelreservationsystem.model.HotelLogBook;
@@ -19,7 +21,7 @@ public class HotelReservationMain {
 	// Adding hotel details for regular customer
 	private static void addHotelWithRegularCustomerPrice() {
 		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 3);
-		Hotel bridgeWood = new Hotel("BridgeWood", 160, 50, 4);
+		Hotel bridgeWood = new Hotel("BridgeWood", 160, 40, 4);
 		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 5);
 		hotelLog.addHotelToHotelLogBook(lakeWood);
 		hotelLog.addHotelToHotelLogBook(bridgeWood);
@@ -55,17 +57,25 @@ public class HotelReservationMain {
 			long totalPrice = hotel.getWeekRateForRegular() * weekDays + hotel.getWeekendRateForRegular() * weekends;
 			hotel.setTotalPrice(totalPrice);
 		}
-		Hotel cheapestHotel = hotelLog.getHotelBook().stream().sorted(Comparator.comparing(Hotel::getTotalPrice))
-				.findFirst().orElse(null);
-		return cheapestHotel;
+		List<Hotel> cheapestHotelList = hotelLog.getHotelBook().stream()
+				.sorted(Comparator.comparing(Hotel::getTotalPrice)).collect(Collectors.toList());
+
+		Hotel cheapHotel = cheapestHotelList.get(0); // Initialize to lowest price hotel
+		long lowestPrice = cheapestHotelList.get(0).getTotalPrice();
+		int rating = cheapestHotelList.get(0).getRating();
+		for (Hotel hotel : hotelLog.getHotelBook()) {
+			if (hotel.getTotalPrice() <= lowestPrice && hotel.getRating() > rating)
+				cheapHotel = hotel;
+		}
+		return cheapHotel;
 	}
 
 	public static void main(String[] args) {
-		// UC 1 & UC3
+		// UC 1 & UC3 & UC5
 		System.out.println("Welcome to Hotel Reservation!");
 		addHotelWithRegularCustomerPrice();
 
-		// UC2 & UC4
+		// UC2 & UC4 & UC6
 		System.out.println("Enter the check in date in ddMMMYYYY format");
 		String startDate = SC.next();
 		System.out.println("Enter the check out date in ddMMMYYYY format");
@@ -73,7 +83,8 @@ public class HotelReservationMain {
 		Hotel cheapHotel;
 		try {
 			cheapHotel = cheapestHotelForRegularCustomer(startDate, endDate);
-			System.out.println(cheapHotel.getHotelName() + "'s total rate is $ " + cheapHotel.getTotalPrice());
+			System.out.println("Hotel Name : " + cheapHotel.getHotelName() + ", Rating : " + cheapHotel.getRating()
+					+ ", And Total rate is $ " + cheapHotel.getTotalPrice());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
