@@ -9,15 +9,26 @@ public class Hotel {
 	private int weekRateForRegular;
 	private int weekendRateForRegular;
 	private long totalPrice;
+	private int rating;
 
 	// Constructors
-	public Hotel(String hotelName, int weekRateForRegular, int weekendRateForRegular) {
+	public Hotel(String hotelName, int weekRateForRegular, int weekendRateForRegular, int rating) {
 		this.hotelName = hotelName;
 		this.weekRateForRegular = weekRateForRegular;
 		this.weekendRateForRegular = weekendRateForRegular;
+		this.rating=rating;
 	}
 
 	// Getters and Setters
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
 	public String getHotelName() {
 		return hotelName;
 	}
