@@ -18,9 +18,9 @@ public class HotelReservationMain {
 
 	// Adding hotel details for regular customer
 	private static void addHotelWithRegularCustomerPrice() {
-		Hotel lakeWood = new Hotel("LakeWood", 110);
-		Hotel bridgeWood = new Hotel("BridgeWood", 160);
-		Hotel ridgeWood = new Hotel("RidgeWood", 220);
+		Hotel lakeWood = new Hotel("LakeWood", 110, 90);
+		Hotel bridgeWood = new Hotel("BridgeWood", 160, 50);
+		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150);
 		hotelLog.addHotelToHotelLogBook(lakeWood);
 		hotelLog.addHotelToHotelLogBook(bridgeWood);
 		hotelLog.addHotelToHotelLogBook(ridgeWood);
@@ -43,11 +43,11 @@ public class HotelReservationMain {
 	}
 
 	public static void main(String[] args) {
-		//UC 1
+		// UC 1
 		System.out.println("Welcome to Hotel Reservation!");
 		addHotelWithRegularCustomerPrice();
 
-		//UC2
+		// UC2
 		System.out.println("Enter the check in date in ddMMMYYYY format");
 		String startDate = SC.next();
 		System.out.println("Enter the check out date in ddMMMYYYY format");
@@ -59,5 +59,7 @@ public class HotelReservationMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//UC3 
 	}
 }
