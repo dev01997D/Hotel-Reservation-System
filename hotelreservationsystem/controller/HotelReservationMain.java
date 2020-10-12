@@ -58,21 +58,22 @@ public class HotelReservationMain {
 
 		long weekends = dateRange - weekDays;
 		for (Hotel hotel : hotelLog.getHotelBook()) {
-			long totalPrice = hotel.getWeekRateForRegular() * weekDays + hotel.getWeekendRateForRegular() * weekends;
+			long totalPrice = hotel.getWeekRateForRewardCustomer() * weekDays + hotel.getWeekendRateForRewardCustomer() * weekends;
 			hotel.setTotalPrice(totalPrice);
 		}
 
-		List<Hotel> bestRatedHotelList = hotelLog.getHotelBook().stream()
-				.sorted(Comparator.comparing(Hotel::getRating).reversed()).collect(Collectors.toList());
-		Hotel cheapHotel = bestRatedHotelList.get(0); // Initialize to highest rated hotel
-		long lowestPrice = bestRatedHotelList.get(0).getTotalPrice();
-		int rating = bestRatedHotelList.get(0).getRating();
+		List<Hotel> cheapRatedHotelList = hotelLog.getHotelBook().stream()
+				.sorted(Comparator.comparing(Hotel::getTotalPrice)).collect(Collectors.toList());
+		
+		Hotel cheapestHotel = cheapRatedHotelList.get(0); 
+		long lowestPrice = cheapRatedHotelList.get(0).getTotalPrice();
+		int rating = cheapRatedHotelList.get(0).getRating();
 
 		for (Hotel hotel : hotelLog.getHotelBook()) {
-			if (hotel.getTotalPrice() < lowestPrice && hotel.getRating() >= rating)
-				cheapHotel = hotel;
+			if (hotel.getTotalPrice() <= lowestPrice && hotel.getRating() > rating)
+				cheapestHotel = hotel;
 		}
-		return cheapHotel;
+		return cheapestHotel;
 	}
 
 	public static void main(String[] args) {
