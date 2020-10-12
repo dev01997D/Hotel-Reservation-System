@@ -23,7 +23,7 @@ public class HotelReservationMain {
 	}
 
 	// Adding hotel details for regular customer
-	private static void addHotelWithRegularCustomerPrice() {
+	private static void addHotelWithAllDetails() {
 		Hotel lakeWood = new Hotel("LakeWood", 110, 90, 80, 80, 3);
 		Hotel bridgeWood = new Hotel("BridgeWood", 160, 40, 110, 50, 4);
 		Hotel ridgeWood = new Hotel("RidgeWood", 220, 150, 100, 40, 5);
@@ -35,12 +35,8 @@ public class HotelReservationMain {
 		;
 	}
 
-	// Adding hotel details for reward customer
-	private static void addHotelWithRewardCustomerPrice() {
-	}
-
 	// Find Cheapest hotel for given date range
-	private static Hotel cheapestHotelForRegularCustomer(String dateStart, String dateEnd) throws Exception {
+	private static Hotel cheapestHotelForAnyCustomer(String dateStart, String dateEnd, String customer) throws Exception {
 		Date startDate = formatter.parse(dateStart);
 		Date endDate = formatter.parse(dateEnd);
 		long dateRange = 1 + (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24; // Convert the difference
@@ -61,10 +57,17 @@ public class HotelReservationMain {
 		} while (startCal.getTimeInMillis() <= endCal.getTimeInMillis());
 
 		long weekends = dateRange - weekDays;
-		if (customer_Type.REWARD.name().equals("REWARD")) {
+		if (customer_Type.REWARD.name().equalsIgnoreCase(customer)) {
 			for (Hotel hotel : hotelLog.getHotelBook()) {
 				long totalPrice = hotel.getWeekRateForRewardCustomer() * weekDays
 						+ hotel.getWeekendRateForRewardCustomer() * weekends;
+				hotel.setTotalPrice(totalPrice);
+			}
+		}
+		else if (customer_Type.REGULAR.toString().equalsIgnoreCase(customer)) {
+			for (Hotel hotel : hotelLog.getHotelBook()) {
+				long totalPrice = hotel.getWeekRateForRegular() * weekDays
+						+ hotel.getWeekendRateForRegular() * weekends;
 				hotel.setTotalPrice(totalPrice);
 			}
 		}
@@ -86,17 +89,18 @@ public class HotelReservationMain {
 	public static void main(String[] args) {
 		// UC 1 & UC3 & UC5 & UC9
 		System.out.println("Welcome to Hotel Reservation!");
-		addHotelWithRegularCustomerPrice();
-		addHotelWithRewardCustomerPrice();
+		addHotelWithAllDetails();
 
 		// UC2 & UC4 & UC6 & UC7
 		System.out.println("Enter the check in date in ddMMMYYYY format");
 		String startDate = SC.next();
 		System.out.println("Enter the check out date in ddMMMYYYY format");
 		String endDate = SC.next();
+		System.out.println("Enter customer type");
+		String customer=SC.next();
 		Hotel cheapHotel;
 		try {
-			cheapHotel = cheapestHotelForRegularCustomer(startDate, endDate);
+			cheapHotel = cheapestHotelForAnyCustomer(startDate, endDate, customer);
 			System.out.println("Hotel Name : " + cheapHotel.getHotelName() + ", Rating : " + cheapHotel.getRating()
 					+ ", And Total rate is $ " + cheapHotel.getTotalPrice());
 		} catch (Exception e) {
